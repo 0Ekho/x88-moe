@@ -1,0 +1,4 @@
+.vscode
+src/data/config.php
+src/data/*.db
+src/public/f/*

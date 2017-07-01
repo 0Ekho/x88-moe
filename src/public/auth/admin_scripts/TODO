@@ -1,0 +1,7 @@
+Some scripts for seeing the URLS for all uploaded files, seeing all the URLS for shortlinks, getting delete URLs for any file/shortlink, etc to allow for admining,
+
+Scripts to add / invalidate apikeys
+
+maybe a script for creating shortlinks with specific item_keys (and editing where they go) to allow for special shortlinks such as domain.tld/s/event_name pointing to an event
+
+the auth dir should be restricted by your webserver to require authentication for obvious reasons.
