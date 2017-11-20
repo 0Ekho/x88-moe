@@ -9,6 +9,7 @@ $config = array(
     "delete_key_length" => 48,
     // max size of files can be uploaded in bytes (NOTE: you will need to change some PHP settings to accept requests of at least this size)
     "max_file_size" => 268435456, //256 MiB
+    "max_file_size_h" => "256 MiB", // this could be a function but lazy, this is what is shown in the HTML
     // log all sucessfull changes (upload/delete/shorten) to changes_log_path
     "log_changes" => TRUE,
     // where to store logs on changes (upload/delete/shorten) for if someone is posting harmful content they can be blocked
