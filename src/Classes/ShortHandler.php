@@ -31,7 +31,7 @@ class ShortHandler
     }
     public function getLink($item_key)
     {
-        $stmt = static::$db->prepare("SELECT location FROM shortlinks WHERE item_key=:item_key");
+        $stmt = static::$db->prepare("SELECT location FROM shortlinks WHERE item_key=:item_key AND deleted=0");
         $stmt->bindParam(":item_key", $item_key, SQLITE3_TEXT);
         $stmt->bindParam(":delete_key", $delete_key, SQLITE3_TEXT);
         $results = $stmt->execute();

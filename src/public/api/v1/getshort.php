@@ -1,5 +1,5 @@
 <?php
-if (defined("reveal_include")) {
+if (defined("NL_2")) {
     require_once "./../../data/config.php";
 } else {
     require_once "./../../../data/config.php";
@@ -20,7 +20,7 @@ try {
 }
 
 if (!$bad_request) {
-    if (defined("reveal_include")) {
+    if (defined("NL_2")) {
         require_once "./../../Classes/ShortHandler.php";
         require_once "./../../Classes/Utils.php";
     } else {

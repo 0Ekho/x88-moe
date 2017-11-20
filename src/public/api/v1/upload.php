@@ -1,5 +1,10 @@
 <?php
-require_once "./../../../data/config.php";
+/* Is there a better way to do this? */
+if (defined("NL_2")) {
+    require_once "./../../data/config.php";
+} else {
+    require_once "./../../../data/config.php";
+}
 
 $bad_request = FALSE;
 $output = array (
@@ -40,16 +45,22 @@ try {
 }
 
 if (!$bad_request) {
-    require_once "./../../../Classes/FileHandler.php";
-    require_once "./../../../Classes/AuthHandler.php";
-    require_once "./../../../Classes/Utils.php";
+    if (defined("NL_2")) {
+        require_once "./../../Classes/FileHandler.php";
+        require_once "./../../Classes/AuthHandler.php";
+        require_once "./../../Classes/Utils.php";
+    } else {
+        require_once "./../../../Classes/AuthHandler.php";
+        require_once "./../../../Classes/Utils.php";
+        require_once "./../../../Classes/FileHandler.php";
+    }
 
     $Utils = new Utils();
     $db = new SQLite3($config["database"]);
     $AuthHandle = new AuthHandler($config, $db);
-    $api_key = $Utils->sanitizeArray($_POST["apikey"]);
 
     if (!$config["public_api"]) {
+        $api_key = $Utils->sanitizeArray($_POST["apikey"]);
         $valid = $AuthHandle->isKeyValid($api_key);
     } else {
         $valid = TRUE;
@@ -59,7 +70,11 @@ if (!$bad_request) {
         try {
             $urls = $FileHandle->saveFile($_FILES["file"]);
             if ($config["log_changes"]) {
-                require_once "./../../../Classes/Log.php";
+                if (defined("NL_2")) {
+                    require_once "./../../Classes/Log.php";
+                } else {
+                    require_once "./../../../Classes/Log.php";
+                }
                 $Log = new Log($config["changes_log_path"]);
                 $used_key = ($config["public_api"] ? "" : ", API KEY: {$api_key}");
                 $Log->log("INFO", "[UPLOAD_FILE] IP: {$_SERVER['REMOTE_ADDR']}, URL: {$urls['url']}{$used_key}");
@@ -77,5 +92,7 @@ if (!$bad_request) {
 }
 
 // JSON encode was breaking things, might work for you though
-echo("{\"url\":\"{$output['url']}\", \"delete_link\":\"{$output['delete_link']}\",\"status\":\"{$output['status']}\"}");
+if (!isset($_POST["web_upload"])) {
+    echo("{\"url\":\"{$output['url']}\", \"delete_link\":\"{$output['delete_link']}\",\"status\":\"{$output['status']}\"}");
+}
 ?>
