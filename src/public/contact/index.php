@@ -8,7 +8,7 @@
         If there is an issue with any content hosted here<br>
         (DMCA/Copyright, malware, otherwise illegal (USA/JP), etc)<br>
         or any other issue with this site contact can be made at<br>
-        <strong>'contact{at}$email'</strong> ($email = ekho.email)<br>
+        <strong>'contact{at}ekho[dot]email'</strong><br>
         or any of the methods listed at<br>
         <a href="https://www.ekho.digital/contact">https://www.ekho.digital/contact</a><br>
         if requesting content removal please provide the link to the content,<br>
