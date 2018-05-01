@@ -10,7 +10,7 @@
         - File host <br>
         <span class=smallnote>I dislike frontend development....<br></span>
         <br>
-        <a href="contact/">DMCA/Copyright/Contact</a>
+        <a href="contact/">Contact</a>
     </div>
 </body>
 </html>
