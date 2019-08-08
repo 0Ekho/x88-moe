@@ -1,12 +1,9 @@
-@import url("https://fonts.googleapis.com/css?family=Noto+Sans:400,400i,700,700i|Noto+Serif:400,400i,700,700i&subset=greek,greek-ext,latin-ext");
-@import url("https://fonts.googleapis.com/earlyaccess/notosansjapanese.css");
-/* Sorry for Google but this will hopefully allow the fonts to be cached already */
 /* reset */
 html, body, div, span, h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, address, cite, code,  del, dfn, em, img, ins, kbd, q, s, samp,
 small, strong, sub, sup, var, b, u, i, dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup,
+article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary, time, mark, audio, video {
         margin: 0;
         padding: 0;
@@ -29,9 +26,10 @@ q:before, q:after {
 
 body {
     margin: 16px;
-    background: #222222;
-    color: #FFFFFF;
-    font-family: "Noto Sans", "Noto Sans CJK JP", sans;
+    color: #FEFEFE;
+    background-color: #333333;
+    line-height: 1.4;
+    font-family: "Noto Sans CJK JP", "Noto Sans", "DejaVu Sans", "IPAGothic", "Sans";
 }
 h1 { font-size: 63px; }
 h2 { font-size: 30px; }
@@ -40,13 +38,35 @@ h4 { font-size: 18px; }
 h5 { font-size: 14px; }
 h6 { font-size: 12px; }
 h1, h2, h3, h4, h5, h6 {
-	font-weight: 500;
-	line-height: 1.1;
+    font-weight: 500;
+    line-height: 1.1;
+}
+@media (max-width: 450px) {
+    h1 { font-size: 40px; }
 }
 a:link { color: #22BBFF; text-decoration: none;}
 a:visited { color: #44BBFF; }
 a:hover { color: #22FFBB; }
 a:active { color: #33FFDD; }
+.main {
+    margin-top: 75px;
+}
+.infobox {
+    background: rgba(8, 8, 8, 0.75);
+    border-radius: 4px;
+    margin-top: 24px;
+    margin-left: 5%;
+    width: 40%;
+    min-width: 419px;
+    color: #EEEEEE;
+}
+.infobox.infohead {
+    text-align: center;
+    padding: 16px 32px;
+}
+.infobox.infomsg {
+    padding: 32px 32px;
+}
 .smallnote {
     font-size: 85%;
 }
@@ -54,12 +74,11 @@ a:active { color: #33FFDD; }
     font-style: italic;
 }
 .grey {
-    color: #888888;
+    color: #777777;
 }
 .smallindent {
     padding-left: 4%;
 }
-.disableLink {
-    pointer-events: none;
-    cursor: default;
- }
+.monospace {
+    font-family: "Hack", "Mononoki", "Fira Code", "Noto Sans Mono CJK JP", "Noto Sans Mono", "DejaVu Sans Mono", "monospace";
+}
