@@ -1,0 +1,74 @@
+server {
+    listen 80;
+    listen [::]:80;
+    server_name x88.devel;
+
+    add_header "X-Robots-Tag" "none, noarchive, nosnippet, notranslate, noimageindex, noodp";
+    add_header "Content-Security-Policy" "default-src 'none'; font-src 'self'; img-src 'self'; object-src 'none'; script-src 'self'; style-src 'self'";
+    add_header "X-Content-Type-Options" "nosniff";
+    add_header "X-Frame-Options" "DENY";
+    add_header "X-XSS-Protection" "1; mode=block";
+    add_header "Referrer-Policy" "same-origin";
+
+    root /var/www/x88/frontend/public;
+
+    #limit_conn x88conn 4;
+    #limit_req zone=x88req burst=10 nodelay;
+    #limit_rate_after 10m;
+    #limit_rate 1m;
+
+    index index.html;
+
+    location / {
+            try_files $uri $uri/ =404;
+    }
+
+    location ~ /api/ {
+        # this will need to be set the same as max size in config.toml
+       client_max_body_size 256M;
+       include uwsgi_params;
+       uwsgi_pass unix:/var/www/x88/api/moe.sock;
+    }
+
+
+    error_page 404 /404.html;
+    error_page 500 502 503 504 /50x.html;
+    location = /50x.html {
+            root /usr/share/nginx/html;
+    }
+
+    location ^~ /f/ {
+        root /var/www/x88/data/public;
+
+        # TODO: write a better rule that only passes basename to api
+        try_files $uri $uri/ /api/v1/get?obj=$uri&browser;
+
+        # we don't want the browser risking running these from this directory, show as source
+        location ~* \.(html|js|css|htm|xml|html5|)$ {
+            add_header Content-Type text/plain;
+        }
+        # some source code extensions, show as text instead of downloading
+        # can alternativly set these in /etc/nginx/mime.types under text/plain
+        location ~* \.(c|h|cc|hh|cpp|cxx|hpp|hxx|awk|sh|pl|pm|py|json|asm|s|lua|java|bat|vbs|ps|rb|cs|f77|f90|go|hs|csv|md|ini|yaml|log|cfg|conf|asc|php|jl|toml)$ {
+            add_header Content-Type text/plain;
+        }
+    }
+    location = /f/ {
+        return $scheme://x88.devel;
+    }
+    
+    # shortlink rewrites
+    location /s/ {
+        rewrite /s/([_a-zA-Z0-9-]+) /api/v1/getshort?obj=$1&r&browser last;
+        return $scheme://x88.devel;
+    }
+    location /r/ {
+        rewrite /r/([_a-zA-Z0-9-]+) /api/v1/getshort?obj=$1&browser last;
+                return $scheme://x88.devel;
+        }
+    
+    location /auth/ {
+        auth_basic "Authorization required";
+        auth_basic_user_file /var/www/x88/htpasswd;
+    }
+}

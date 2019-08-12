@@ -1,0 +1,40 @@
+[core]
+  domain = "x88.devel"
+  https = false
+  log_location = "/var/log/x88-moe.log"
+  # log levels, will only log messages >= the set value
+  # 1: DEBUG, 2: INFO, 3: WARNING, 4: ERROR, 5: CRITICAL
+  # NOTE: log of INFO and lower will log what IPs used to upload files and auth with API keys
+  # please set log level appropriately when running in production
+  log_level = 1
+  database = "/var/www/x88/data/x88.sqlite"
+
+[api]
+  # is the API public (if false an API key is required)
+  public = false
+  # how long should the file / shortlink key be
+  item_key_len = 8
+  # how long are the deletion keys
+  del_key_len = 48
+  # charset keys are generated from
+  key_charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+[files]
+  # where files are saved to
+  upload_path = "/var/www/x88/data/public/f"
+  # max size of uploaded files, in bytes
+  max_filesize = 268435456
+  # max number of characters in extension
+  max_ext_len = 24
+  # characters to remove from extensions
+  banned_ext_chars = "/?#$%&()[]{}<>;'\""
+  # filetypes to block from upload, note this is not very reliable
+  banned_files = ['exe', 'msi']
+
+[shorts]
+  # max length of links allowed to be shortened
+  max_link_len = 8192
+  # should the API return redirect or reveal links
+  use_reveal = true
+  # list of domains that will not be shortened
+  banned_domains = ['bad.site', 'banned.site']

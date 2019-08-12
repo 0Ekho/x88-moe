@@ -1,4 +1,7 @@
 .vscode
-src/data/config.php
-src/data/*.db
-src/public/f/*
+*.swp
+data/config.toml
+data/*.db
+data/*.sqlite
+public/f
+frontend/public
