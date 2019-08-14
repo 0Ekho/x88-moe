@@ -1,10 +1,7 @@
-import logging
 from flask import abort
 from werkzeug.urls import url_parse
 from moe import moe, db
 from moe.auth import gen_key
-
-log = logging.getLogger(__name__)
 
 # -----------------------------------------------------------------------------
 
@@ -17,7 +14,7 @@ def add_link(l, kid):
     # TODO: block subdomains of banned domain
     # ex: example.com blocks sub.example.com
     # but sub.example.com allows example.com
-    # (loop up host checking in banned_domains?)
+    # for banned_domain if in purl.host?
     if purl.host in moe.config['SHORT']['banned_domains']:
         abort(415, description="domain is banned")
 
@@ -53,7 +50,7 @@ def get_link(obj):
     row = cur.fetchone()
     cur.close()
 
-    log.debug("get_file: object: %s", obj)
+    moe.logger.debug("get_file: object: %s", obj)
     if row is None:
         return (False, 404)
 

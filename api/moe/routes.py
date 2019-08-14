@@ -1,13 +1,10 @@
-import logging
 from os.path import basename
-from flask import request, jsonify, redirect, abort
+from flask import request, jsonify, redirect, abort, escape
 from werkzeug.urls import url_parse
 from moe import moe
 from moe.auth import check_param, check_api, check_del
 from moe.file import valid_file_req, save_file, del_file, get_file
 from moe.short import add_link, del_short, get_link
-
-log = logging.getLogger(__name__)
 
 BASEURL = "https://" if moe.config['CORE']['https'] else "http://"\
     + moe.config['CORE']['domain']
@@ -18,16 +15,16 @@ BASEURL = "https://" if moe.config['CORE']['https'] else "http://"\
 
 @moe.route('/api/v1/upload', methods=['POST'])
 def file_upload():
-    log.debug("recived api request for upload")
+    moe.logger.debug("recived api request for upload")
 
     valid_file_req(request)  # aborts if invalid
 
     res = check_api(request)  # aborts if auth fails
-    log.info("upload: auth successful with key ID %s", res[1])
+    moe.logger.info("upload: auth successful with key ID %s", res[1])
 
     res = save_file(request.files['file'], res[1])  # aborts if fails
-    log.info("upload: file successfully saved as %s from IP %s", res[0],
-             request.remote_addr)
+    moe.logger.info("upload: file successfully saved as %s from IP %s", res[0],
+                    request.remote_addr)
 
     return jsonify(ok={
         'url': BASEURL + '/f/' + res[0],
@@ -40,7 +37,7 @@ def file_upload():
 
 @moe.route('/api/v1/get', methods=['GET'])
 def file_get():
-    log.debug("recived api request for get file")
+    moe.logger.debug("recived api request for get file")
 
     check_param(request.args, 'obj')
 
@@ -64,9 +61,9 @@ def file_get():
 # -------------------------------------
 
 
-@moe.route('/api/v1/delete', methods=['GET'])
+@moe.route('/api/v1/delete', methods=['GET', 'DELETE'])
 def file_delete():
-    log.debug("recived api request for delete")
+    moe.logger.debug("recived api request for delete")
 
     res = check_del(request, "files")
 
@@ -77,33 +74,38 @@ def file_delete():
 # -----------------------------------------------------------------------------
 # shortlink endpoints
 
+# NOTE: this is known to be risky, does not validate URL and can pretty much
+# end up with arbitrary text, possibly allowing for attacks on users opening
+# links, however when it already redirects to arbitrary locations there is
+# already a risk present (but should still be fixed eventually)
+
 
 @moe.route('/api/v1/makeshort', methods=['POST'])
 def short_make():
-    log.debug("recived api request for makeshort")
+    moe.logger.debug("recived api request for makeshort")
 
     check_param(request.form, 'link')
 
     res = check_api(request)  # aborts if auth fails
-    log.info("makeshort: auth successful with key ID %s", res[1])
+    moe.logger.info("makeshort: auth successful with key ID %s", res[1])
 
     res = add_link(request.form['link'], res[1])  # aborts if fails
-    log.info("makeshort: link successfully saved as %s from IP %s", res[0],
-             request.remote_addr)
+    moe.logger.info("makeshort: link successfully saved as %s from IP %s",
+                    res[0], request.remote_addr)
 
     return jsonify(ok={
         'url': BASEURL + (
             '/r/' if moe.config['SHORT']['use_reveal'] else '/s/') + res[0],
         'del_key':
             BASEURL + '/api/v1/deleteshort?obj=' + res[0] + '&delkey=' + res[1]
-        }), 201
+    }), 201
 
 # -------------------------------------
 
 
 @moe.route('/api/v1/getshort', methods=['GET'])
 def short_get():
-    log.debug("recived api request for getshort")
+    moe.logger.debug("recived api request for getshort")
 
     check_param(request.args, 'obj')
 
@@ -123,26 +125,25 @@ def short_get():
             abort(410, "Gone, object deleted")
 
     if 'r' in request.args:
-        log.debug('redirecting to %s', res[1])
+        moe.logger.debug('redirecting to %s', res[1])
         purl = url_parse(res[1])
         if purl.scheme == '':
-            log.debug('adding http scheme to url before redirect')
+            moe.logger.debug('adding http scheme to url before redirect')
             return redirect('http://' + res[1], code=303)
 
         return redirect(res[1], code=303)
 
     if 'browser' in request.args:
-        # TODO: add some minimal HTML to make this a link, but disable clicking
-        return "Link redirects to: " + res[1], 200
+        return "Link redirects to: " + escape(res[1]), 200
 
     return jsonify(ok={'url': res[1]}), 200
 
 # -------------------------------------
 
 
-@moe.route('/api/v1/deleteshort', methods=['GET'])
+@moe.route('/api/v1/deleteshort', methods=['GET', 'DELETE'])
 def short_delete():
-    log.debug("recived api request for deleteshort")
+    moe.logger.debug("recived api request for deleteshort")
 
     res = check_del(request, "shortlinks")
 

@@ -1,5 +1,7 @@
 [flake8]
-exclude=wsgi.py,__pycache__
+exclude=wsgi.py,__pycache__,venv
+
+ignore=W503
 
 statistics = True
 

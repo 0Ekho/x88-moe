@@ -5,8 +5,10 @@ BASEDIR = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config():
+    """load config file, and check all required settings are present"""
+
     cfgpath = os.environ.get('MOE_CONFIG') or\
-            os.path.join(BASEDIR, '../../config.toml')
+        os.path.join(BASEDIR, '../../config.toml')
     # no try because don't know where to even log yet.
     cfg = toml.load(cfgpath)
     # have no idea the "correct" way to do this in python
@@ -51,14 +53,14 @@ class Config():
     if 'max_filesize' not in cfg['files'] or\
             not isinstance(cfg['files']['max_filesize'], int):
         raise Exception(
-                "files.max_filesize missing from config or not integer")
+            "files.max_filesize missing from config or not integer")
     if 'max_ext_len' not in cfg['files'] or\
             not isinstance(cfg['files']['max_ext_len'], int):
         raise Exception("files.max_ext_len missing from config or not integer")
     if 'banned_ext_chars' not in cfg['files'] or\
             not isinstance(cfg['files']['banned_ext_chars'], str):
         raise Exception(
-                "files.banned_ext_chars missing from config or not string")
+            "files.banned_ext_chars missing from config or not string")
     if 'banned_files' not in cfg['files'] or\
             not isinstance(cfg['files']['banned_files'], list):
         raise Exception("files.upload_path missing from config or not array "
@@ -68,7 +70,7 @@ class Config():
     if 'max_link_len' not in cfg['shorts'] or\
             not isinstance(cfg['shorts']['max_link_len'], int):
         raise Exception(
-                "shorts.max_link_len missing from config or not integer")
+            "shorts.max_link_len missing from config or not integer")
     if 'use_reveal' not in cfg['shorts'] or\
             not isinstance(cfg['shorts']['use_reveal'], bool):
         raise Exception("shorts.use_reveal missing from config or not boolean")

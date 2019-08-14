@@ -1,14 +1,12 @@
 import secrets
-import logging
 from flask import abort
 from moe import moe, db
-
-log = logging.getLogger(__name__)
 
 # -----------------------------------------------------------------------------
 
 
 def check_param(req, prm):
+    """Check if request contains parameter and is non empty, else abort"""
     if prm not in req:
         abort(400, description="no " + prm + " parameter")
 
@@ -24,6 +22,13 @@ def gen_key(length):
 
 
 def check_api(req):
+    """Check if request satisfies API key requirements
+
+    check if API key is even required
+    if it is, check if the key is present in the request, and if it passes auth
+    return tuple with if auth passed and the API key ID (0 if no API key)
+    abort if the API key is invalid
+    """
     if moe.config['API']['public']:
         return (True, 0)
 
@@ -37,14 +42,16 @@ def check_api(req):
 
 
 def check_api_key(key):
+    """Check is api key is valid and get its row ID"""
     cur = db.execute('SELECT valid, id FROM apikeys WHERE key=?;', (key,))
     row = cur.fetchone()
     if row is None:
-        log.debug("no API keys found")
+        moe.logger.debug("no API keys found")
         return (False, 0)
 
     cur.close()
-    log.debug("found API key at index %s, with validity %s", row[1], row[0])
+    moe.logger.debug("found API key at index %s, with validity %s",
+                     row[1], row[0])
     return (bool(row[0]), row[1])
 
 # -------------------------------------
@@ -62,12 +69,18 @@ def check_del(req, table):
 
 
 def check_del_key(key, obj, table):
+    """Checks if delete key is valid for object in table and gets its row ID
+
+    Aborts if already deleted
+    Returns a tuple containing if the deletion key was valid and if it was, the
+    row ID of the object
+    """
     # table is not user provided and is hardcoded up the stack so no SQLi
-    cur = db.execute('SELECT rowid, deleted FROM ' + table +
-                     ' WHERE obj=? AND del_key=?;', (obj, key))
+    cur = db.execute('SELECT rowid, deleted FROM ' + table
+                     + ' WHERE obj=? AND del_key=?;', (obj, key))
     row = cur.fetchone()
     if row is None:
-        log.debug("incorrect object %s or deletion key %s", obj, key)
+        moe.logger.debug("incorrect object %s or deletion key %s", obj, key)
         return (False, 0)
 
     cur.close()
@@ -75,5 +88,5 @@ def check_del_key(key, obj, table):
     if row[1] == 1:
         abort(410, "object already deleted")
 
-    log.debug("found valid object at index %s,", row[0])
+    moe.logger.debug("found valid object at index %s,", row[0])
     return (True, row[0])
