@@ -12,10 +12,10 @@ server {
 
     root /var/www/x88/frontend/public;
 
-    #limit_conn x88conn 4;
-    #limit_req zone=x88req burst=10 nodelay;
-    #limit_rate_after 10m;
-    #limit_rate 1m;
+    limit_conn x88conn 4;
+    limit_req zone=x88req burst=10 nodelay;
+    limit_rate_after 10m;
+    limit_rate 1m;
 
     index index.html;
 
@@ -27,7 +27,7 @@ server {
         # this will need to be set the same as max size in config.toml
        client_max_body_size 256M;
        include uwsgi_params;
-       uwsgi_pass unix:/var/www/x88/api/moe.sock;
+       uwsgi_pass unix:/var/run/uwsgi/moe.sock;
     }
 
 
