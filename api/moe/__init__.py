@@ -6,8 +6,12 @@ from moe.config import Config
 moe = Flask(__name__)
 moe.config.from_object(Config)
 
+moe.version = "0.0.1-alpha"
+
 logging.basicConfig(filename=moe.config['CORE']['log_location'],
                     level=moe.config['CORE']['log_level'])
+
+moe.logger.info("starting version %s", moe.version)
 
 moe.config['MAX_CONTENT_LENGTH'] = moe.config['FILES']['max_filesize']
 moe.logger.info("MAX_CONTENT_LENGTH set to %s",

@@ -1,5 +1,5 @@
 [core]
-  domain = "x88.devel"
+  domain = "x88.moe"
   https = false
   log_location = "/var/log/x88-moe.log"
   # log levels, will only log messages >= the set value

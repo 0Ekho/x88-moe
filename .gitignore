@@ -1,6 +1,6 @@
 .vscode
 *.swp
-data/config.toml
+config.toml
 data/*.db
 data/*.sqlite
 public/f
