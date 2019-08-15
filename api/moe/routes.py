@@ -6,7 +6,7 @@ from moe.auth import check_param, check_api, check_del
 from moe.file import valid_file_req, save_file, del_file, get_file
 from moe.short import add_link, del_short, get_link
 
-BASEURL = "https://" if moe.config['CORE']['https'] else "http://"\
+BASEURL = ("https://" if moe.config['CORE']['https'] else "http://")\
     + moe.config['CORE']['domain']
 
 # -----------------------------------------------------------------------------
