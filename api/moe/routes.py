@@ -28,7 +28,7 @@ def file_upload():
 
     return jsonify(ok={
         'url': BASEURL + '/f/' + res[0],
-        'del_key':
+        'del_link':
             BASEURL + '/api/v1/delete?obj=' + res[0] + '&delkey=' + res[1]
     }), 201
 
@@ -96,7 +96,7 @@ def short_make():
     return jsonify(ok={
         'url': BASEURL + (
             '/r/' if moe.config['SHORT']['use_reveal'] else '/s/') + res[0],
-        'del_key':
+        'del_link':
             BASEURL + '/api/v1/deleteshort?obj=' + res[0] + '&delkey=' + res[1]
     }), 201
 
