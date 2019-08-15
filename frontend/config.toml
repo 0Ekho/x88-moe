@@ -1,0 +1,12 @@
+baseURL = "https://x88.moe/"
+
+copyright = "CC BY 4.0"
+
+languageCode = "en"
+title = "x88.moe"
+
+disableHugoGeneratorInject = false
+enableRobotsTXT = true
+disableLiveReload = true
+
+enableGitInfo = true

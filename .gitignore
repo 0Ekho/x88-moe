@@ -1,7 +1,6 @@
 .vscode
 *.swp
-config.toml
-data/*.db
-data/*.sqlite
-public/f
+/config.toml
+data/
 frontend/public
+frontend/resources
