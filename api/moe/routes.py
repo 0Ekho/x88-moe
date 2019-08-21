@@ -1,5 +1,5 @@
 from os.path import basename
-from flask import request, jsonify, redirect, abort, escape
+from flask import request, jsonify, redirect, abort, escape, render_template
 from werkzeug.urls import url_parse
 from moe import moe
 from moe.auth import check_param, check_api, check_del
@@ -150,3 +150,12 @@ def short_delete():
     del_short(res[1])
 
     return jsonify(ok={'msg': "shortlink deleted successfully"}), 200
+
+
+# -----------------------------------------------------------------------------
+# frontend templating
+
+
+@moe.route('/', methods=['GET'])
+def show_index():
+    return render_template('index.html', title=moe.config['CORE']['domain'])

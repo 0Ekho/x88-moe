@@ -31,11 +31,13 @@ $ cp config.example.toml config.toml
 change options as needed, domain and path locations are almost certain to need changes, and
 preferably enable https
 
+"api/moe/templates/index.html" should be edited however for your index page
+
 configure nginx
 ```
 # cp sys/nginx_x88-moe /etc/nginx/sites-available/x88-moe
 ```
-and edit the 3 root paths, domains, and (optionally) setup TLS appropriately
+and edit the 3 root paths, 4 domains, and (optionally) setup TLS appropriately
 you may also need to configure your socket appropriately
 
 you may have to create the log file and give correct permissions
@@ -45,12 +47,7 @@ you may have to create the log file and give correct permissions
 # chmod 660 /var/log/x88-moe.log
 ```
 
-run hugo to build the frontend
-```
-$ cd frontend; hugo
-```
-
-setup uwsgi with systemd (bleh)
+setup uwsgi (systemd, bleh)
 // TODO:
 
 
@@ -58,3 +55,7 @@ finally, create your API key, if needed. make one for each user you want to have
 ```
 $ sys/add_api.py 'user name'
 ```
+
+
+// TODO: better permissions for security, do not want to be able to write to api or public,
+only data

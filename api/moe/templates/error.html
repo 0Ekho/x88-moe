@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+<p>
+{% if errmsg %}
+    {{ errmsg }}
+{% else %}
+    An Unknown error occurred.
+{% endif %}
+</p> 
+{% endblock %}

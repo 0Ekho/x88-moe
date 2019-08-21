@@ -10,7 +10,7 @@ server {
     add_header "X-XSS-Protection" "1; mode=block";
     add_header "Referrer-Policy" "same-origin";
 
-    root /var/www/x88/frontend/public;
+    root /var/www/x88/public;
 
     limit_conn x88conn 4;
     limit_req zone=x88req burst=10 nodelay;
@@ -19,15 +19,20 @@ server {
 
     index index.html;
 
+    location = / {
+        include uwsgi_params;
+        uwsgi_pass unix:/var/run/uwsgi/moe.sock;
+    }
+
     location / {
-            try_files $uri $uri/ =404;
+        try_files $uri $uri/ =404;
     }
 
     location ~ /api/ {
         # this will need to be set the same as max size in config.toml
-       client_max_body_size 256M;
-       include uwsgi_params;
-       uwsgi_pass unix:/var/run/uwsgi/moe.sock;
+        client_max_body_size 256M;
+        include uwsgi_params;
+        uwsgi_pass unix:/var/run/uwsgi/moe.sock;
     }
 
 
