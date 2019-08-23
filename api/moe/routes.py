@@ -143,7 +143,7 @@ def short_get():
         return redirect(res[1], code=303)
 
     if 'browser' in request.args:
-        return "Link redirects to: " + escape(res[1]), 200
+        return render_template('reveal.html', link=escape(res[1])), 200
 
     return jsonify(ok={'url': res[1]}), 200
 
