@@ -3,5 +3,3 @@
 *.dev.ini
 /config.toml
 data/
-frontend/public
-frontend/resources

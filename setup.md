@@ -47,6 +47,9 @@ you may have to create the log file and give correct permissions
 # chmod 660 /var/log/x88-moe.log
 ```
 
+Note: permissions for program files should be `640 webmin :www-data`,
+only data files should have g+w
+
 setup uwsgi (systemd, bleh)
 // TODO:
 
@@ -58,4 +61,4 @@ $ sys/add_api.py 'user name'
 
 
 // TODO: better permissions for security, do not want to be able to write to api or public,
-only data
+only data (0640?)

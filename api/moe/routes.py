@@ -44,14 +44,18 @@ def file_get():
     res = get_file(basename(request.args['obj']))
     if res == 404:
         if 'browser' in request.args:
-            return '404 Not Found: The requested URL was not found on the '\
-                'server. If you entered the URL manually please check your '\
-                'spelling and try again.', 404
+            return render_template(
+                'error.html', errmsg='404 Not Found: '
+                'The requested URL was not found on the server. '
+                'If you entered the URL manually please check your '
+                'spelling and try again.'), 404
 
         abort(404, "object not found")
     if res == 410:
         if 'browser' in request.args:
-            return "410 Gone: the requested URL has been deleted", 410
+            return render_template(
+                'error.html',
+                errmsg="410 Gone: the requested URL has been deleted"), 410
 
         abort(410, "Gone, object deleted")
 
@@ -113,14 +117,19 @@ def short_get():
     if not res[0]:
         if res[1] == 404:
             if 'browser' in request.args:
-                return "404 Not Found: The requested URL was not found on "\
-                    "the server. If you entered the URL manually please "\
-                    "check your spelling and try again.", 404
+                return render_template(
+                    'error.html', errmsg='404 Not Found: '
+                    'The requested URL was not found on the server. '
+                    'If you entered the URL manually please check your '
+                    'spelling and try again.'), 404
 
             abort(404, "object not found")
         if res[1] == 410:
             if 'browser' in request.args:
-                return "410 Gone: the requested URL has been deleted", 410
+                return render_template(
+                    'error.html',
+                    errmsg="410 Gone: the requested URL has been deleted"
+                ), 410
 
             abort(410, "Gone, object deleted")
 
