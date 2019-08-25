@@ -1,5 +1,6 @@
 .vscode
 *.swp
 *.dev.ini
-/config.toml
+config.toml
 data/
+/moe/templates/index.html

@@ -12,9 +12,9 @@ $ ln -s /bulk/storage/location data/public/f
 
 install venv and dependencies
 ```
-$ virtualenv -p python3 api/venv
-$ source api/venv/bin/activate
-$ pip install toml flask uwsgi
+$ python3 -m venv venv
+$ source venv/bin/activate
+$ pip install -r requirements.txt
 ```
 
 create the database, and set permissions
@@ -31,7 +31,11 @@ $ cp config.example.toml config.toml
 change options as needed, domain and path locations are almost certain to need changes, and
 preferably enable https
 
-"api/moe/templates/index.html" should be edited however for your index page
+create index page
+```
+$ cp moe/templates/index.example.html moe/templates/index.html
+```
+should be edited however for your index page
 
 configure nginx
 ```
@@ -47,8 +51,8 @@ you may have to create the log file and give correct permissions
 # chmod 660 /var/log/x88-moe.log
 ```
 
-Note: permissions for program files should be `640 webmin :www-data`,
-only data files should have g+w
+Note: permissions for program files should be `640 webmin www-data`,
+only data files should have `g+w`
 
 setup uwsgi (systemd, bleh)
 // TODO:
@@ -58,7 +62,3 @@ finally, create your API key, if needed. make one for each user you want to have
 ```
 $ sys/add_api.py 'user name'
 ```
-
-
-// TODO: better permissions for security, do not want to be able to write to api or public,
-only data (0640?)

@@ -12,7 +12,7 @@
   * Optional parameters
     * browser - value meaningless, if parameter is present response will be plaintext / html
     
-* delete - GET
+* delete - GET, DELETE
   * Required parameters
     * obj - object key (filename)
     * delkey - deletion key for object
@@ -31,7 +31,7 @@
     * r - value meaningless, if parameter is present will respond with redirect instead of json
     * browser (r overrides this parameter) - value meaningless, if parameter is present response will be plaintext / html
 
-* deleteshort - GET
+* deleteshort - GET, DELETE
   * Required parameters
     * obj - object key
     * delkey - deletion key for object

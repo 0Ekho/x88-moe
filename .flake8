@@ -4,4 +4,3 @@ exclude=wsgi.py,__pycache__,venv
 ignore=W503
 
 statistics = True
-

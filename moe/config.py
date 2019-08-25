@@ -8,7 +8,7 @@ class Config():
     """load config file, and check all required settings are present"""
 
     cfgpath = os.environ.get('MOE_CONFIG') or\
-        os.path.join(BASEDIR, '../../config.toml')
+        os.path.join(BASEDIR, '../config.toml')
     # no try because don't know where to even log yet.
     cfg = toml.load(cfgpath)
     # have no idea the "correct" way to do this in python

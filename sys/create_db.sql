@@ -4,12 +4,14 @@ CREATE TABLE "shortlinks" (
     `location`  TEXT,
     `del_key`   TEXT NOT NULL UNIQUE,
     `deleted`   INTEGER NOT NULL,
+    `time`      INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
     `key_id`    INTEGER NOT NULL 
 );
 CREATE TABLE "files" (
     `obj`       TEXT NOT NULL UNIQUE,
     `del_key`   TEXT NOT NULL UNIQUE,
     `deleted`   INTEGER NOT NULL,
+    `time`      INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
     `key_id`    INTEGER NOT NULL 
 );
 CREATE TABLE "apikeys" (
