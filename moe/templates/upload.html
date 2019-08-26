@@ -1,0 +1,7 @@
+{% extends "objform.html" %}
+{% block formstart %}
+<form class="create" action="/api/v1/upload" method="post" enctype="multipart/form-data">
+    <label for="file">Select A file to upload</label><br>
+    <input type="file" id="file" name="file" required>
+{% endblock %}
+{% block submittext %}Upload{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+{% block formstart %}{% endblock %}    
+    {% if public == False %}
+    <br>
+    <label for="apikey">API key</label><br>
+    <input name="apikey" id="apikey" type="text" required>
+    {% endif %}
+    <br>
+    <button type="submit">{% block submittext %}{% endblock %}</button>
+</form>
+{% endblock %}

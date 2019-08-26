@@ -3,4 +3,6 @@
 *.dev.ini
 config.toml
 data/
+__pycache__/
+venv/
 /moe/templates/index.html

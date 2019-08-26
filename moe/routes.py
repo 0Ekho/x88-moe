@@ -168,3 +168,15 @@ def short_delete():
 @moe.route('/', methods=['GET'])
 def show_index():
     return render_template('index.html', title=moe.config['CORE']['domain'])
+
+
+@moe.route('/makeshort', methods=['GET'])
+def show_makeshort():
+    return render_template('makeshort.html', title="Create shortlink",
+                           public=moe.config['API']['public'])
+
+
+@moe.route('/upload', methods=['GET'])
+def show_upload():
+    return render_template('upload.html', title="Upload file",
+                           public=moe.config['API']['public'])

@@ -1,0 +1,7 @@
+{% extends "objform.html" %}
+{% block formstart %}
+<form class="create" action="/api/v1/makeshort" method="post" required>
+    <label for="link">Link to shorten</label><br>
+    <input name="link" id="link" type="text" value="https://example.com" required>
+{% endblock %}
+{% block submittext %}Create{% endblock %}
