@@ -28,6 +28,11 @@ server {
         try_files $uri $uri/ =404;
     }
 
+    location ~ (upload|makeshort) {
+        include uwsgi_params;
+        uwsgi_pass unix:/var/run/uwsgi/moe.sock;
+    }
+
     location ~ /api/ {
         # this will need to be set the same as max size in config.toml
         client_max_body_size 256M;
