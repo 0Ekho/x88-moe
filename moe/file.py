@@ -1,7 +1,7 @@
 from os import path, remove
 from flask import abort
 from werkzeug import secure_filename
-from moe import moe, db
+from moe import moe, get_db
 from moe.auth import gen_key
 
 
@@ -39,11 +39,11 @@ def save_file(reqf, kid):
     # add to db
     del_key = gen_key(moe.config['API']['del_key_len'])
 
-    db.execute('INSERT INTO files (obj, del_key, deleted, key_id) '
-               'VALUES (?, ?, 0, ?);', (name, del_key, kid))
+    get_db().execute('INSERT INTO files (obj, del_key, deleted, key_id) '
+                     'VALUES (?, ?, 0, ?);', (name, del_key, kid))
     # call commit earlier here to prevent saving file incase of error
     # as if this failed the file would not be able to be deleted
-    db.commit()
+    get_db().commit()
 
     reqf.save(path.join(moe.config['FILES']['upload_path'], name))
     moe.logger.debug("successfully saved %s", name)
@@ -59,8 +59,9 @@ def del_file(r_id, obj):
     """
     # could use obj instead, but have the row ID already from earlier so might
     # as well get the perf benefits of matching on a sorted column O(log n)
-    cur = db.execute('UPDATE files SET deleted=1 WHERE rowid=?;', (r_id,))
-    db.commit()
+    cur = get_db().execute('UPDATE files SET deleted=1 WHERE rowid=?;',
+                           (r_id,))
+    get_db().commit()
     if cur.rowcount == 0:
         cur.close()
         abort(500, description="failed to mark file as deleted")
@@ -77,7 +78,7 @@ def get_file(obj):
 
     Returns the appropriate HTTP code for the objects status
     """
-    cur = db.execute('SELECT deleted FROM files WHERE obj=?;', (obj,))
+    cur = get_db().execute('SELECT deleted FROM files WHERE obj=?;', (obj,))
     row = cur.fetchone()
     cur.close()
 

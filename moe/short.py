@@ -1,6 +1,6 @@
 from flask import abort
 from werkzeug.urls import url_parse
-from moe import moe, db
+from moe import moe, get_db
 from moe.auth import gen_key
 
 # -----------------------------------------------------------------------------
@@ -22,10 +22,11 @@ def add_link(l, kid):
     obj = gen_key(moe.config['API']['item_key_len'])
     del_key = gen_key(moe.config['API']['del_key_len'])
 
-    db.execute('INSERT INTO shortlinks '
-               '(obj, location, del_key, deleted, key_id) '
-               'VALUES (?, ?, ?, 0, ?);', (obj, l, del_key, kid))
-    db.commit()
+    get_db().execute(
+        'INSERT INTO shortlinks (obj, location, del_key, deleted, key_id) '
+        'VALUES (?, ?, ?, 0, ?);', (obj, l, del_key, kid)
+    )
+    get_db().commit()
 
     return (obj, del_key)
 
@@ -33,8 +34,10 @@ def add_link(l, kid):
 
 
 def del_short(r_id):
-    cur = db.execute('UPDATE shortlinks SET deleted=1 WHERE rowid=?;', (r_id,))
-    db.commit()
+    cur = get_db().execute(
+        'UPDATE shortlinks SET deleted=1 WHERE rowid=?;', (r_id,)
+    )
+    get_db().commit()
     if cur.rowcount == 0:
         cur.close()
         abort(500, description="failed to mark link as deleted")
@@ -45,8 +48,9 @@ def del_short(r_id):
 
 
 def get_link(obj):
-    cur = db.execute('SELECT deleted, location FROM shortlinks WHERE obj=?;',
-                     (obj,))
+    cur = get_db().execute(
+        'SELECT deleted, location FROM shortlinks WHERE obj=?;', (obj,)
+    )
     row = cur.fetchone()
     cur.close()
 

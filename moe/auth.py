@@ -1,6 +1,6 @@
 import secrets
 from flask import abort
-from moe import moe, db
+from moe import moe, get_db
 
 # -----------------------------------------------------------------------------
 
@@ -43,7 +43,9 @@ def check_api(req):
 
 def check_api_key(key):
     """Check is api key is valid and get its row ID"""
-    cur = db.execute('SELECT valid, id FROM apikeys WHERE key=?;', (key,))
+    cur = get_db().execute(
+        'SELECT valid, id FROM apikeys WHERE key=?;', (key,)
+    )
     row = cur.fetchone()
     if row is None:
         moe.logger.debug("no API keys found")
@@ -76,8 +78,8 @@ def check_del_key(key, obj, table):
     row ID of the object
     """
     # table is not user provided and is hardcoded up the stack so no SQLi
-    cur = db.execute('SELECT rowid, deleted FROM ' + table
-                     + ' WHERE obj=? AND del_key=?;', (obj, key))
+    cur = get_db().execute('SELECT rowid, deleted FROM ' + table
+                           + ' WHERE obj=? AND del_key=?;', (obj, key))
     row = cur.fetchone()
     if row is None:
         moe.logger.debug("incorrect object %s or deletion key %s", obj, key)
