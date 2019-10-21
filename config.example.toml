@@ -1,5 +1,5 @@
 [core]
-  domain = "x88.moe"
+  domain = "x88.invalid"
   https = false
   log_location = "/var/log/x88-moe.log"
   # log levels, will only log messages >= the set value
@@ -37,4 +37,4 @@
   # should the API return redirect or reveal links
   use_reveal = true
   # list of domains that will not be shortened
-  banned_domains = ['bad.site', 'banned.site']
+  banned_domains = ['bad.example', 'banned.example']

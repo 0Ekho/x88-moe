@@ -1,7 +1,7 @@
 server {
     listen 80;
     listen [::]:80;
-    server_name x88.devel;
+    server_name x88.test;
 
     add_header "X-Robots-Tag" "none, noarchive, nosnippet, notranslate, noimageindex, noodp";
     add_header "Content-Security-Policy" "default-src 'none'; font-src 'self'; img-src 'self'; object-src 'none'; script-src 'self'; style-src 'self'";
@@ -59,22 +59,22 @@ server {
         }
         # some source code extensions, show as text instead of downloading
         # can alternativly set these in /etc/nginx/mime.types under text/plain
-        location ~* \.(c|h|cc|hh|cpp|cxx|hpp|hxx|awk|sh|pl|pm|py|json|asm|s|lua|java|bat|vbs|ps|rb|cs|f77|f90|go|hs|csv|md|ini|yaml|log|cfg|conf|asc|php|jl|toml)$ {
+        location ~* \.(c|h|cc|hh|cpp|cxx|hpp|hxx|awk|sh|pl|pm|py|json|asm|s|lua|java|bat|vbs|ps|rb|cs|f77|f90|go|hs|csv|md|ini|yaml|log|cfg|conf|asc|php|jl|toml|rs)$ {
             add_header Content-Type text/plain;
         }
     }
     location = /f/ {
-        return $scheme://x88.devel;
+        return $scheme://x88.test;
     }
     
     # shortlink rewrites
     location /s/ {
         rewrite /s/([_a-zA-Z0-9-]+) /api/v1/getshort?obj=$1&r&browser last;
-        return $scheme://x88.devel;
+        return $scheme://x88.test;
     }
     location /r/ {
         rewrite /r/([_a-zA-Z0-9-]+) /api/v1/getshort?obj=$1&browser last;
-                return $scheme://x88.devel;
+                return $scheme://x88.test;
         }
     
     location /auth/ {
