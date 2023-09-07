@@ -1,6 +1,6 @@
 from os import path, remove
 from flask import abort
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 from moe import moe, get_db
 from moe.auth import gen_key
 
